@@ -5,6 +5,7 @@ import img2pdf
 import re
 import requests
 
+from tempfile import mkdtemp
 from time import localtime, strftime
 from os import listdir, walk
 from os.path import isfile, join
@@ -22,21 +23,15 @@ try:
 except NameError:
     pass  # python3
 
-# import time
 
-CURRENT = os.getcwd()
+BUILD_FOLDER = mkdtemp()
 
 
 def download_images(url):
     html = requests.get(url).content
-
-    # soup = BeautifulSoup(page_source, 'html.parser')
     soup = BeautifulSoup(html, "html.parser")
-    # with open('soup.html', 'wb') as f:
-    #    f.write(soup)
-
     title = "".join(
-        (CURRENT + "/pdf_images", strftime("/%Y%m%d_%H%M%S", localtime()))
+        (BUILD_FOLDER + "/pdf_images", strftime("/%Y%m%d_%H%M%S", localtime()))
     )  # temp img dir
 
     # images = soup.findAll('source', {'data-testid':'slide-image-source'})
@@ -91,7 +86,7 @@ def download_images(url):
 
 def convert_pdf(img_dir_name, pdf_f):
     f = []
-    for dirpath, dirnames, filenames in walk(join(CURRENT, img_dir_name)):
+    for dirpath, dirnames, filenames in walk(join(BUILD_FOLDER, img_dir_name)):
         f.extend(filenames)
         break
     f = ["%s/%s" % (img_dir_name, x) for x in f]
