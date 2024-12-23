@@ -22,38 +22,13 @@ try:
 except NameError:
     pass  # python3
 
-# from selenium import webdriver
-# from selenium.webdriver.common.by import By
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
-# from selenium.webdriver.chrome.options import Options
-# from selenium.webdriver.chrome.service import Service
-
 # import time
 
-CURRENT = os.path.dirname(__file__)
-
-# options = Options()
-
-# options.headless = True
-# options.add_argument("start-maximized")
-# options.add_experimental_option("excludeSwitches", ["enable-automation"])
-# options.add_experimental_option('useAutomationExtension', False)
-# service = Service(executable_path=r'/opt/local/bin/chromedriver')
-# driver = webdriver.Chrome(service=service, options=options)
+CURRENT = os.getcwd()
 
 
 def download_images(url):
-    ## Update 2024-07-17: revert to requests instead of selenium
     html = requests.get(url).content
-    # driver.get(url)
-    # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-    # modify this depend on your internet connection and the size of the slides
-    # time.sleep(5)
-
-    # Get the page source after interactions
-    # page_source = driver.page_source.encode('utf-8')
 
     # soup = BeautifulSoup(page_source, 'html.parser')
     soup = BeautifulSoup(html, "html.parser")
@@ -74,8 +49,6 @@ def download_images(url):
     # @rmetzger_
     # " class="vertical-slide-image VerticalSlideImage_image__VtE4p VerticalSlideImage_loaded__Q7FLb" data-testid="vertical-slide-image" id="slide-image-0" loading="eager" sizes="100vw" src="https://image.slidesharecdn.com/flinktroubleshooting-new-150528082323-lva1-app6892/85/Apache-Flink-Hands-On-1-320.jpg" srcset="https://image.slidesharecdn.com/flinktroubleshooting-new-150528082323-lva1-app6892/85/Apache-Flink-Hands-On-1-320.jpg 320w, https://image.slidesharecdn.com/flinktroubleshooting-new-150528082323-lva1-app6892/85/Apache-Flink-Hands-On-1-638.jpg 638w, https://image.slidesharecdn.com/flinktroubleshooting-new-150528082323-lva1-app6892/75/Apache-Flink-Hands-On-1-2048.jpg 2048w"/>
     images = soup.find_all("img", {"data-testid": "vertical-slide-image"})
-
-    # driver.quit()
 
     image_url = ""
 
